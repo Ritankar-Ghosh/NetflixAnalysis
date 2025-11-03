@@ -1,0 +1,8 @@
+# Netflix EDA Dashboard Dependencies
+streamlit
+plotly
+seaborn
+pandas
+matplotlib
+wordcloud
+
