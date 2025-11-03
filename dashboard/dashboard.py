@@ -28,7 +28,7 @@ def netflix_style(fig):
     )
     return fig
 
-df = pd.read_csv("../data/cleaned_netflix.csv")
+df = pd.read_csv("cleaned_netflix.csv")
 
 # Navbar title
 st.sidebar.title("Navigation")
@@ -201,6 +201,7 @@ else:
         </style>
     """, unsafe_allow_html=True)
 
+
 text_color = "white" if theme_choice == "Dark" else "black"
 
 st.set_page_config(page_title="Netflix Analysis!", page_icon=":bar_chart:", layout="wide")
@@ -224,7 +225,7 @@ if uploaded_file is not None:
     st.sidebar.success("File uploaded successfully!")
 else:
     # Otherwise, use default dataset from the project folder
-    default_path = os.path.join(os.path.dirname(__file__), "../data/cleaned_netflix.csv")
+    default_path = os.path.join(os.path.dirname(__file__), "cleaned_netflix.csv")
 
     if os.path.exists(default_path):
         df = pd.read_csv(default_path, encoding='ISO-8859-1')

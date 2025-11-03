@@ -75,4 +75,12 @@ Each chart automatically adapts to the chosen Light/Dark Netflix theme.
 
 Users can toggle themes via the sidebar for a better viewing experience.
 
+## Possible Future Enhancements
+- Integration of Machine Learning models to predict content trends.
+- Addition of a recommendation system for suggesting similar shows/movies.
+- Addition of a time-based slider for analyzing release patterns over decades.
+- Including regional sentiment analysis on descriptions.
+- Addition of IMDb score integration
+
+## Link : 
 
