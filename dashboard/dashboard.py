@@ -209,30 +209,26 @@ st.set_page_config(page_title="Netflix Analysis!", page_icon=":bar_chart:", layo
 st.title(":bar_chart: Netflix Movies and TV Shows EDA")
 st.markdown('<style>div.block-container{padding-top:2rem;}</style>',unsafe_allow_html=True)
 
-# Sidebar: File Upload
-st.sidebar.header("Upload Your Netflix Dataset")
+st.sidebar.subheader("Upload Dataset")
 
-uploaded_file = st.sidebar.file_uploader(
-    "Upload a CSV file",
-    type=["csv"],
-    help="Upload your own Netflix dataset (e.g., netflix_titles.csv)"
-)
+# --- Dataset loading logic ---
+base_path = os.path.dirname(__file__)  # current folder of dashboard.py
+default_path = os.path.join(base_path, "cleaned_netflix.csv")
 
-# Load Dataset
+# Option 1: User upload
+uploaded_file = st.sidebar.file_uploader("Upload your Netflix CSV file", type=["csv"])
+
 if uploaded_file is not None:
-    # If user uploads a file, use that
-    df = pd.read_csv(uploaded_file, encoding='ISO-8859-1')
+    df = pd.read_csv(uploaded_file, encoding="ISO-8859-1")
     st.sidebar.success("File uploaded successfully!")
+# Option 2: Fallback to default dataset
+elif os.path.exists(default_path):
+    df = pd.read_csv(default_path, encoding="ISO-8859-1")
+    st.sidebar.info("Using default cleaned Netflix dataset.")
+# Option 3: No file at all → stop app
 else:
-    # Otherwise, use default dataset from the project folder
-    default_path = os.path.join(os.path.dirname(__file__), "cleaned_netflix.csv")
-
-    if os.path.exists(default_path):
-        df = pd.read_csv(default_path, encoding='ISO-8859-1')
-        st.sidebar.info("Using default Netflix dataset.")
-    else:
-        st.error("No dataset found! Please upload a CSV file to continue.")
-        st.stop()
+    st.sidebar.error("No dataset found! Please upload a CSV file to continue.")
+    st.stop()
 
 # Data Validation
 required_cols = ["title", "type", "release_year", "country", "duration"]
