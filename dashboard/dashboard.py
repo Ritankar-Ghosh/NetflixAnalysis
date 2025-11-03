@@ -210,22 +210,37 @@ st.title(":bar_chart: Netflix Movies and TV Shows EDA")
 st.markdown('<style>div.block-container{padding-top:2rem;}</style>',unsafe_allow_html=True)
 
 #Upload Dataset
-st.sidebar.header("Upload Dataset")
-
+st.sidebar.header("Upload Netflix Dataset")
 base_path = os.path.dirname(__file__)
-file_path = os.path.join(base_path, "cleaned_netflix.csv")
+default_path = os.path.join(base_path, "cleaned_netflix.csv")
 
-if os.path.exists(file_path):
-    df = pd.read_csv(file_path, encoding="ISO-8859-1")
-    st.sidebar.success("Loaded default cleaned Netflix dataset.")
-else:
-    uploaded_file = st.sidebar.file_uploader("Upload your Netflix CSV file", type=["csv"])
-    if uploaded_file is not None:
+uploaded_file = st.sidebar.file_uploader("Upload your Netflix CSV file", type=["csv"])
+
+def is_netflix_csv(df: pd.DataFrame) -> bool:
+    """Check if the uploaded CSV looks like a Netflix dataset."""
+    netflix_keywords = {"title", "type", "release_year", "country", "listed_in"}
+    cols = set(df.columns.str.lower())
+    return len(cols.intersection(netflix_keywords)) >= 3  # must match at least 3 key columns
+
+if uploaded_file is not None:
+    try:
         df = pd.read_csv(uploaded_file, encoding="ISO-8859-1")
-        st.sidebar.success("File uploaded successfully!")
-    else:
-        st.sidebar.error("No dataset found! Please upload a CSV file to continue.")
+        if not is_netflix_csv(df):
+            st.sidebar.error("This doesn’t appear to be a valid Netflix dataset.")
+            st.sidebar.info("Please upload a CSV with columns like title, type, release_year, country, etc.")
+            st.stop()
+        st.sidebar.success("Netflix dataset uploaded successfully!")
+    except Exception as e:
+        st.sidebar.error(f"Failed to read file: {e}")
         st.stop()
+
+elif os.path.exists(default_path):
+    df = pd.read_csv(default_path, encoding="ISO-8859-1")
+    st.sidebar.info("Using default cleaned Netflix dataset.")
+else:
+    st.sidebar.error("No dataset found! Please upload a Netflix CSV file to continue.")
+    st.stop()
+
 
 # Data Validation
 required_cols = ["title", "type", "release_year", "country", "duration"]
