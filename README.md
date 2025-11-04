@@ -82,5 +82,4 @@ Users can toggle themes via the sidebar for a better viewing experience.
 - Including regional sentiment analysis on descriptions.
 - Addition of IMDb score integration
 
-## Link : 
-
+## Link : https://netflixanalysis-eda.streamlit.app/
