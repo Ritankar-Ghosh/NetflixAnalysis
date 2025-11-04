@@ -28,7 +28,14 @@ def netflix_style(fig):
     )
     return fig
 
-df = pd.read_csv("cleaned_netflix.csv")
+# Getting the current directory (where this script is)
+current_dir = os.path.dirname(os.path.abspath(__file__))
+
+# Building the path to the dataset file
+file_path = os.path.join(current_dir, "cleaned_netflix.csv")
+
+# Reading the CSV safely
+df = pd.read_csv(file_path)
 
 # Navbar title
 st.sidebar.title("Navigation")
